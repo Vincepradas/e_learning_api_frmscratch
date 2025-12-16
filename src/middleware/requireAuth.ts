@@ -41,7 +41,6 @@ export const requireAuth = async (
       return res.status(401).json({ error: "User not found" });
     }
 
-    // Map role string back to roleId if needed
     const roleId = Object.entries(RoleMap).find(
       ([, value]) => value === user.role
     )?.[0];
@@ -50,7 +49,7 @@ export const requireAuth = async (
       id: user.id.toString(),
       email: user.email,
       role: user.role,
-      roleId: roleId ? Number(roleId) as RoleId : undefined,
+      roleId: roleId ? (Number(roleId) as RoleId) : undefined,
     };
 
     next();
