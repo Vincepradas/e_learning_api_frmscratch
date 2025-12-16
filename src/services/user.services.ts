@@ -1,7 +1,7 @@
 import { UserRepository } from "../repositories/user.repository";
 import { hashPassword } from "../utils/password.util";
 import { resolveRole, getRoleIdFromRole, Role } from "../utils/role.util";
-import { RoleMap } from "../types/User";
+import { RoleMap } from "../types/Role";
 
 export class UserService {
   constructor(private repo = new UserRepository()) {}

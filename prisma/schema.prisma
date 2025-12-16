@@ -23,9 +23,9 @@ model User {
   gender        String?
   isVerified    Boolean   @default(false)
   lastLogin     DateTime?
+  resetToken    String?
   preferences   Json?
   notifications Json?
-  resetToken        String? 
   resetTokenExpiry  DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime?  @updatedAt
@@ -36,31 +36,66 @@ model User {
   quizAttempts   QuizAttempt[] // attempts by student
 }
 
-// -------------------- ROLE ENUM --------------------
+// -------------------- ENUM --------------------
 enum Role {
   student
   teacher
   admin
 }
 
+enum CourseType {
+  LABORATORY
+  LECTURE
+}
+
 // -------------------- COURSE --------------------
 model Course {
-  id          Int          @id @default(autoincrement())
-  title       String
-  description String?
-  teacherId   Int
-  teacher     User         @relation("InstructorCourses", fields: [teacherId], references: [id])
-  enrollments Enrollment[]
-  quizzes     Quiz[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id             String   @id
+
+  // Academic identity
+  code           String    @unique              // e.g. CS101
+  title          String
+  description    String?
+
+  // Schedule
+  startTime      DateTime
+  endTime        DateTime
+  days           String                       // e.g. "MWF", "TTH"
+  room           String?  @default("TBA")
+
+  // Classification
+  type           CourseType                   // LECTURE or LAB
+  units          Int
+  block          String                       // e.g. BSCS-2A
+  semester       Int
+  schoolYear     String                       // e.g. 2024-2025
+
+  // Capacity & status
+  maxStudents    Int
+  isActive       Boolean   @default(true)
+
+  // Instructor
+  teacherId      Int?
+  teacher        User?      @relation("InstructorCourses", fields: [teacherId], references: [id])
+
+  // Relations
+  enrollments    Enrollment[]
+  quizzes        Quiz[]
+
+  // Audit
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([teacherId])
+  @@index([semester, schoolYear])
 }
+
 
 // -------------------- ENROLLMENT --------------------
 model Enrollment {
   id         Int      @id @default(autoincrement())
   userId     Int
-  courseId   Int
+  courseId   String
   user       User     @relation(fields: [userId], references: [id])
   course     Course   @relation(fields: [courseId], references: [id])
   enrolledAt DateTime @default(now())
@@ -72,7 +107,7 @@ model Enrollment {
 model Quiz {
   id        Int           @id @default(autoincrement())
   title     String
-  courseId  Int
+  courseId  String
   course    Course        @relation(fields: [courseId], references: [id])
   attempts  QuizAttempt[]
   createdAt DateTime      @default(now())

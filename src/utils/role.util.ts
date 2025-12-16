@@ -1,4 +1,4 @@
-import { RoleId, RoleMap } from "../types/User";
+import { RoleId, RoleMap } from "../types/Role";
 
 export type Role = "student" | "teacher" | "admin";
 

@@ -7,24 +7,20 @@ export const COURSE_SELECT = {
   title: true,
   description: true,
 
-  // Schedule
   startTime: true,
   endTime: true,
   days: true,
   room: true,
 
-  // Classification
   type: true,
   units: true,
   block: true,
   semester: true,
   schoolYear: true,
 
-  // Capacity & status
   maxStudents: true,
   isActive: true,
 
-  // Instructor
   teacherId: true,
   teacher: {
     select: {
@@ -34,7 +30,6 @@ export const COURSE_SELECT = {
     },
   },
 
-  // Relations (lightweight)
   enrollments: {
     select: {
       id: true,
@@ -48,7 +43,6 @@ export const COURSE_SELECT = {
     },
   },
 
-  // Audit
   createdAt: true,
   updatedAt: true,
 } satisfies Prisma.CourseSelect;
@@ -57,9 +51,9 @@ export class CourseRepository {
   create(data: Prisma.CourseCreateInput) {
     return prisma.course.create({
       data,
-      select: COURSE_SELECT
-    })
-  };
+      select: COURSE_SELECT,
+    });
+  }
 
   findAll(pageIndex: number, pageSize: number) {
     return prisma.course.findMany({

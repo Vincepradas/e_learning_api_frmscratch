@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import prisma from "../config/database";
-import type { Role, RoleId } from "../types/User";
-import { RoleMap } from "../types/User";
+import type { Role, RoleId } from "../types/Role";
+import { RoleMap } from "../types/Role";
 
 const JWT_SECRET = process.env.JWT_SECRET || "supersecret";
 
