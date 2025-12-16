@@ -13,4 +13,14 @@ router.post(
     controller.createCourse
 )
 
+router.get(
+    "/",
+    controller.getAllCourse
+)
+
+router.get(
+    "/:code",
+    controller.getCourseByCode
+)
+
 export default router;

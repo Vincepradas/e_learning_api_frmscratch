@@ -41,8 +41,14 @@ export class CourseService {
     if (missing.length) {
       throw new Error(`Missing required fields: ${missing.join(", ")}`);
     }
-    const id = uuidv4();
 
+    if (await this.repo.isConflict(code, days, startTime, endTime)) {
+      throw new Error(
+        "Time conflict: another course with the same code overlaps on this day"
+      );
+    }
+
+    const id = uuidv4();
     const course = await this.repo.create({
       id,
       code,
@@ -64,8 +70,28 @@ export class CourseService {
     return { ...course };
   }
 
-  //   updateCourse();
-  //   getCourse();
+  async getAll(pageIndex: number, pageSize: number, id: string) {
+    const [course, total] = await Promise.all([
+      this.repo.findAll(pageIndex, pageSize),
+      this.repo.count(id)
+    ]);
+
+    return { course, total };
+  }
+
+  async getByCode(code: string) {
+    const courses = await this.repo.findByCode(code);
+    if (courses.length === 0) {
+      throw new Error(`No course with code: ${code} found in our record.`);
+    }
+    return courses; 
+  }
+
+  async updateCourse(id: any, data: any) {
+    const course = await this.repo.update(id, data);
+    return { ...course };
+  }
+
   //   deleteCourse();
   //   couseCompletionStatus();
 }

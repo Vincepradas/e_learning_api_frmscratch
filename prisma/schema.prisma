@@ -53,7 +53,7 @@ model Course {
   id             String   @id
 
   // Academic identity
-  code           String    @unique              // e.g. CS101
+  code           String
   title          String
   description    String?
 
