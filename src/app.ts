@@ -2,6 +2,7 @@ import express from "express";
 import userRoutes from "./routes/user.route";
 import authRoutes from "./routes/auth.route";
 import courseRoutes from "./routes/course.route";
+import storageRoutes from "./routes/storage.route";
 import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/users/", userRoutes);
 app.use("/api/auth/", authRoutes);
 app.use("/api/course/", courseRoutes);
+app.use("/api/storage/", storageRoutes);
 
 // Health check
 app.get("/", (req, res) => {

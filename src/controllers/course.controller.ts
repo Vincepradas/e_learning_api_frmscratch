@@ -36,7 +36,7 @@ export class CourseController {
 
   getCourseByCode = async (req: Request, res: Response) => {
     try {
-      const code = req.params.code; // <-- get code from URL
+      const code = req.params.code;
       const courses = await this.service.getByCode(code);
       res.json(courses);
     } catch (e: any) {

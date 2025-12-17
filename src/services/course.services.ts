@@ -48,9 +48,8 @@ export class CourseService {
       );
     }
 
-    const id = uuidv4();
     const course = await this.repo.create({
-      id,
+      id: uuidv4(),
       code,
       title,
       description,
@@ -67,13 +66,13 @@ export class CourseService {
       ...rest,
     });
 
-    return { ...course };
+    return course;
   }
 
   async getAll(pageIndex: number, pageSize: number, id: string) {
     const [course, total] = await Promise.all([
       this.repo.findAll(pageIndex, pageSize),
-      this.repo.count(id)
+      this.repo.count(id),
     ]);
 
     return { course, total };
@@ -84,14 +83,15 @@ export class CourseService {
     if (courses.length === 0) {
       throw new Error(`No course with code: ${code} found in our record.`);
     }
-    return courses; 
+    return courses;
   }
 
   async updateCourse(id: any, data: any) {
     const course = await this.repo.update(id, data);
-    return { ...course };
+    return course;
   }
 
-  //   deleteCourse();
-  //   couseCompletionStatus();
+  delete(id: string) {
+    return this.repo.delete(id);
+  }
 }

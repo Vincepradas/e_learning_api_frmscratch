@@ -108,4 +108,11 @@ export class CourseRepository {
 
     return !!conflict;
   }
+
+    delete(id: string) {
+    return prisma.course.delete({
+      where: { id },
+      select: COURSE_SELECT,
+    });
+  }
 }

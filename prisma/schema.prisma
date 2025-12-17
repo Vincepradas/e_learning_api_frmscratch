@@ -30,10 +30,26 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime?  @updatedAt
 
+
+
   // Relations
+  //files
+  privateFiles  Files[]        @relation("UserPrivateFiles")
   createdCourses Course[]      @relation("InstructorCourses") // courses this instructor created
   enrollments    Enrollment[] // courses student enrolled
   quizAttempts   QuizAttempt[] // attempts by student
+}
+
+model Files {
+  id        String   @id
+  name      String
+  fileSize  Int
+  fileType  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  userId    Int
+  user      User      @relation("UserPrivateFiles", fields: [userId], references: [id])
 }
 
 // -------------------- ENUM --------------------
