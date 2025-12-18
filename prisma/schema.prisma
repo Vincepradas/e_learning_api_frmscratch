@@ -116,7 +116,7 @@ model Enrollment {
   course     Course   @relation(fields: [courseId], references: [id])
   enrolledAt DateTime @default(now())
 
-  @@unique([userId, courseId]) // prevent duplicate enrollments
+  @@unique([userId, courseId]) 
 }
 
 // -------------------- QUIZ --------------------
@@ -140,5 +140,5 @@ model QuizAttempt {
   score       Float?
   attemptedAt DateTime @default(now())
 
-  @@unique([userId, quizId]) // optional: one attempt per quiz per student
+  @@unique([userId, quizId]) 
 }
